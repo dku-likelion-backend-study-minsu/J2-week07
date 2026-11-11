@@ -16,6 +16,9 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
   jpa:
     hibernate:
       ddl-auto: update

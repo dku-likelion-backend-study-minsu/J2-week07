@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GlobalExceptionHandler {
     @ExceptionHandler(GlobalException.class)
     @ResponseBody
-    public ResponseEntity<String> handleException(GlobalException ex) {
+    public ResponseEntity<RsData<Empty>> handleException(GlobalException ex) {
+        log.debug("handleException started!");
+
         RsData<Empty> rsData = ex.getRsData();
 
         return ResponseEntity
                 .status(rsData.getStatusCode())
-                .body(rsData.getMsg());
+                .body(rsData);
     }
 }
