@@ -2,9 +2,9 @@ package com.ll.demo03.domain.member.member.controller;
 
 import com.ll.demo03.domain.member.member.entity.Member;
 import com.ll.demo03.domain.member.member.service.MemberService;
-import com.ll.demo03.global.exceptions.GlobalException;
 import com.ll.demo03.global.rsData.RsData;
-import com.ll.demo03.standard.dto.util.Ut;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,27 +24,18 @@ public class ApiV1MemberController {
     @AllArgsConstructor
     @Getter
     public static class MemberJoinReqBody {
+        @NotBlank(message = "아이디를 입력해주세요.")
         private String username;
+        @NotBlank(message = "비밀번호를 입력해주세요.")
         private String password;
+        @NotBlank(message = "닉네임을 입력해주세요.")
         private String nickname;
     }
 
     @PostMapping("")
     public RsData<Member> join(
-            @RequestBody MemberJoinReqBody reqBody
+            @RequestBody @Valid MemberJoinReqBody reqBody
     ) {
-        if (Ut.str.isBlank(reqBody.username)) {
-            throw new GlobalException("400-1", "아이디를 입력해주세요.");
-        }
-
-        if (Ut.str.isBlank(reqBody.password)) {
-            throw new GlobalException("400-2", "비밀번호를 입력해주세요.");
-        }
-
-        if (Ut.str.isBlank(reqBody.nickname)) {
-            throw new GlobalException("400-3", "닉네임을 입력해주세요.");
-        }
-
         return memberService.join(reqBody.username, reqBody.password, reqBody.nickname);
     }
 }
