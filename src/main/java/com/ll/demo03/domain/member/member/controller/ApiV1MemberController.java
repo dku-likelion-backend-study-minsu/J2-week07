@@ -32,10 +32,20 @@ public class ApiV1MemberController {
         private String nickname;
     }
 
+    @AllArgsConstructor
+    @Getter
+    public static class MemberJoinRespBody {
+        Member item;
+    }
+
     @PostMapping("")
-    public RsData<Member> join(
+    public RsData<MemberJoinRespBody> join(
             @RequestBody @Valid MemberJoinReqBody reqBody
     ) {
-        return memberService.join(reqBody.username, reqBody.password, reqBody.nickname);
+        RsData<Member> joinRs = memberService.join(reqBody.username, reqBody.password, reqBody.nickname);
+
+        return joinRs.newDataOf(
+                new MemberJoinRespBody(joinRs.getData())
+        );
     }
 }
